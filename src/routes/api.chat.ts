@@ -1,90 +1,183 @@
+
 import { createFileRoute } from "@tanstack/react-router";
 
-type ChatMessage = { role: "user" | "assistant"; text: string };
+type ChatMessage = {
+  role: "user" | "assistant";
+  text: string;
+};
 
 export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
         try {
-          const apiKey = process.env.GROQ_API_KEY;
+          // Read the server-side environment variable
+          const rawKey = process.env.GROQ_API_KEY;
+
+          // Clean accidental spaces or surrounding quotes
+          const apiKey = rawKey?.trim().replace(/^["']|["']$/g, "");
+
           if (!apiKey) {
+            console.error("GROQ_API_KEY is missing from server environment.");
+
             return Response.json(
-              { error: "StudyMate AI is not configured. Add GROQ_API_KEY to your .env file and restart the development server." },
-              { status: 503 },
+              {
+                error: "AI service is not configured. Please check the server environment variables.",
+              },
+              { status: 500 },
             );
           }
 
-          const body = await request.json() as {
-            messages?: ChatMessage[];
-            subjects?: { name: string; difficulty: string; preparation: number }[];
-          };
-          const messages = Array.isArray(body.messages) ? body.messages.slice(-12) : [];
-          const safeMessages = messages
-            .filter((item) =>
-              item &&
-              (item.role === "user" || item.role === "assistant") &&
-              typeof item.text === "string",
-            )
-            .map((item) => ({ role: item.role, content: item.text.slice(0, 3000) }));
+          // Use a currently supported model
+          const model =
+            process.env.GROQ_MODEL?.trim() || "openai/gpt-oss-20b";
 
-          if (!safeMessages.length || safeMessages[safeMessages.length - 1]?.role !== "user") {
-            return Response.json({ error: "Please enter a message to continue." }, { status: 400 });
+          // Parse request body
+          const body = (await request.json()) as {
+            messages?: ChatMessage[];
+            subjects?: {
+              name: string;
+              difficulty: string;
+              preparation: number;
+            }[];
+          };
+
+          // Keep only the most recent messages
+          const messages = Array.isArray(body.messages)
+            ? body.messages.slice(-12)
+            : [];
+
+          // Validate and sanitize messages
+          const safeMessages = messages
+            .filter(
+              (item) =>
+                item &&
+                (item.role === "user" || item.role === "assistant") &&
+                typeof item.text === "string",
+            )
+            .map((item) => ({
+              role: item.role,
+              content: item.text.slice(0, 3000),
+            }));
+
+          if (
+            safeMessages.length === 0 ||
+            safeMessages[safeMessages.length - 1].role !== "user"
+          ) {
+            return Response.json(
+              { error: "Please enter a message to continue." },
+              { status: 400 },
+            );
           }
 
+          // Build student subject context
           const subjectContext = Array.isArray(body.subjects)
-            ? body.subjects.slice(0, 20).map((subject) =>
-                `${String(subject.name).slice(0, 80)} (${String(subject.difficulty)}, ${Number(subject.preparation)}% prepared)`,
-              ).join(", ")
+            ? body.subjects
+                .slice(0, 20)
+                .map(
+                  (subject) =>
+                    `${String(subject.name).slice(0, 80)} (${String(
+                      subject.difficulty,
+                    )}, ${Number(subject.preparation)}% prepared)`,
+                )
+                .join(", ")
             : "No subjects added yet";
 
-          const upstream = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${apiKey}`,
+          // Send request to Groq
+          const upstream = await fetch(
+            "https://api.groq.com/openai/v1/chat/completions",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${apiKey}`,
+              },
+              body: JSON.stringify({
+                model,
+                messages: [
+                  {
+                    role: "system",
+                    content: `You are StudyMate AI, a friendly and practical study coach for students.
+
+Give clear, encouraging, age-appropriate study guidance.
+Use concise steps, realistic schedules, active recall, spaced repetition, and breaks where relevant.
+Do not claim to know facts about the student beyond this context.
+
+The student's current subjects: ${subjectContext}.`,
+                  },
+                  ...safeMessages,
+                ],
+                temperature: 0.7,
+                max_tokens: 800,
+              }),
             },
-            body: JSON.stringify({
-              model: process.env.GROQ_MODEL || "llama-3.3-70b-versatile",
-              messages: [
-                {
-                  role: "system",
-                  content: `You are StudyMate AI, a friendly and practical study coach for students. Give clear, encouraging, age-appropriate study guidance. Use concise steps, realistic schedules, active recall, spaced repetition, and breaks where relevant. Do not claim to know facts about the student beyond this context. Their current subjects: ${subjectContext}.`,
-                },
-                ...safeMessages,
-              ],
-              temperature: 0.7,
-              max_tokens: 800,
-            }),
-          });
+          );
 
-          const result = await upstream.json() as {
-            choices?: { message?: { content?: string | null } }[];
-            error?: { message?: string };
-          };
+          // Parse upstream response safely
+          const responseText = await upstream.text();
 
+          let result: any;
+
+          try {
+            result = JSON.parse(responseText);
+          } catch {
+            result = { raw: responseText };
+          }
+
+          // Detailed server-side error logging
           if (!upstream.ok) {
-            console.error("Groq API request failed:", result.error?.message || upstream.status);
-            const status = upstream.status === 429 ? 429 : upstream.status === 401 ? 401 : 502;
+            console.error("========== GROQ API ERROR ==========");
+            console.error("HTTP Status:", upstream.status);
+            console.error("Model:", model);
+            console.error("Error response:", result);
+            console.error("==================================");
+
+            let message = "Groq AI request failed.";
+
+            if (upstream.status === 401) {
+              message =
+                "Groq rejected the API key. Check the GROQ_API_KEY in Vercel.";
+            } else if (upstream.status === 403) {
+              message =
+                "Groq denied access. Check your API account permissions.";
+            } else if (upstream.status === 404) {
+              message =
+                "The selected Groq model was not found. Check the GROQ_MODEL variable.";
+            } else if (upstream.status === 429) {
+              message =
+                "Groq rate limit reached. Please wait and try again.";
+            } else if (upstream.status >= 500) {
+              message =
+                "Groq's service is temporarily unavailable. Please try again.";
+            }
+
             return Response.json(
-              { error: upstream.status === 401
-                  ? "Groq rejected the API key. Check that your new GROQ_API_KEY is correct."
-                  : upstream.status === 429
-                    ? "The AI service is temporarily rate-limited. Please wait a moment and try again."
-                    : "The AI service could not complete that request. Check your Groq model access and API account, then try again." },
-              { status },
+              { error: message },
+              { status: upstream.status === 401 ? 401 : 502 },
             );
           }
 
-          const reply = result.choices?.[0]?.message?.content?.trim();
+          // Extract AI response
+          const reply =
+            result?.choices?.[0]?.message?.content?.trim();
+
           if (!reply) {
-            return Response.json({ error: "The AI returned an empty response. Please try again." }, { status: 502 });
+            console.error("Groq returned no message content:", result);
+
+            return Response.json(
+              { error: "The AI returned an empty response. Please try again." },
+              { status: 502 },
+            );
           }
 
           return Response.json({ reply });
         } catch (error) {
-          console.error("Chat API error:", error);
-          return Response.json({ error: "Something went wrong while contacting the AI. Please try again." }, { status: 500 });
+          console.error("StudyMate API route error:", error);
+
+          return Response.json(
+            { error: "Something went wrong while contacting the AI." },
+            { status: 500 },
+          );
         }
       },
     },
