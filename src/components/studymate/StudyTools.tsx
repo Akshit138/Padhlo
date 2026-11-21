@@ -238,7 +238,7 @@ export function StudyTools({ subjects }: StudyToolsProps) {
               <input className="tool-input" aria-label="Ask your study buddy" placeholder="Ask about revision, focus, exams..." value={draft} onChange={(e) => setDraft(e.target.value)} disabled={chatLoading} />
               <Button type="submit" aria-label="Send message" disabled={!draft.trim() || chatLoading}><Send size={15} /></Button>
             </form>
-            <p className="tool-footnote">AI-powered study help. Add your OpenAI API key to the server environment to activate live answers.</p>
+            <p className="tool-footnote"> AI-powered study help, powered by Groq. Your conversations are processed securely through our server. </p>
           </article>
         </div>
       </div>
