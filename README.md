@@ -10,7 +10,7 @@ Instead of following generic timetables, StudyMate creates intelligent and reali
 
 ## 🌐 Live Website
 
-**Deployment Link:** [Paste Your StudyMate Website URL Here](YOUR_DEPLOYMENT_LINK_HERE)
+**Deployment Link:** [StudyMate.vercel.app/](https://padhlo-h1ympxq57-coders-2159.vercel.app/)
 
 Visit StudyMate to experience AI-powered personalized study planning.
 
