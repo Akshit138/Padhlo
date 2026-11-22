@@ -1,10 +1,18 @@
-# 📚 Padhlo – Your AI-Powered Personal Study Planner
+# 📚 StudyMate – Your AI-Powered Personal Study Planner
 
 **Study Smarter. Plan Better. Achieve More.**
 
-Padhlo is an AI-powered personalized study planning platform designed to help students manage their academic workload efficiently. It uses Artificial Intelligence to generate customized study schedules based on subjects, syllabus, exam dates, preparation levels, subject difficulty, and daily availability.
+StudyMate is an AI-powered personalized study planning platform designed to help students manage their academic workload efficiently. It uses Artificial Intelligence to generate customized study schedules based on subjects, syllabus, exam dates, preparation levels, subject difficulty, and daily availability.
 
-Instead of following generic timetables, Padhlo creates intelligent and realistic study plans that adapt to each student's academic needs.
+Instead of following generic timetables, StudyMate creates intelligent and realistic study plans that adapt to each student's academic needs.
+
+---
+
+## 🌐 Live Website
+
+**Deployment Link:** [Paste Your StudyMate Website URL Here](YOUR_DEPLOYMENT_LINK_HERE)
+
+Visit StudyMate to experience AI-powered personalized study planning.
 
 ---
 
@@ -12,7 +20,7 @@ Instead of following generic timetables, Padhlo creates intelligent and realisti
 
 Students often struggle to balance multiple subjects, assignments, examinations, and personal commitments. Traditional timetable applications provide fixed schedules without considering individual preparation levels, subject difficulty, or upcoming examination dates.
 
-**Padhlo solves this problem by using AI and Prompt Engineering to create personalized, flexible, and practical study schedules.**
+**StudyMate solves this problem by using AI and Prompt Engineering to create personalized, flexible, and practical study schedules.**
 
 ## ✨ Key Features
 
@@ -28,7 +36,7 @@ Students often struggle to balance multiple subjects, assignments, examinations,
 
 ## 🤖 How AI Works
 
-Padhlo uses a structured prompting approach to generate meaningful study plans.
+StudyMate uses a structured prompting approach to generate meaningful study plans.
 
 The AI considers:
 
@@ -44,7 +52,7 @@ These inputs are processed through carefully designed prompts to generate realis
 
 ### Prompt Engineering Approach
 
-Padhlo uses the following prompting principles:
+StudyMate uses the following prompting principles:
 
 - Role-based prompting
 - Context-based prompting
@@ -69,7 +77,7 @@ The objective is to produce accurate, relevant, and organized study recommendati
 
 ## ⚙️ How It Works
 
-1. Open Padhlo.
+1. Open StudyMate.
 2. Enter your academic information.
 3. Add subjects, syllabus, difficulty levels and examination dates.
 4. Specify your available study hours.
@@ -97,7 +105,7 @@ git clone YOUR_GITHUB_REPOSITORY_URL
 **2. Navigate to the project directory**
 
 ```bash
-cd padhlo
+cd studymate
 ```
 
 **3. Install dependencies**
@@ -110,7 +118,7 @@ npm install
 
 Create a `.env` file in the project root:
 
-```env
+```ini
 GEMINI_API_KEY=your_gemini_api_key
 ```
 
@@ -122,7 +130,7 @@ Never expose your API key in frontend code or commit your `.env` file to GitHub.
 npm run dev
 ```
 
-Open the local URL displayed in your terminal to access Padhlo.
+Open the local URL displayed in your terminal to access StudyMate.
 
 ## 🔐 Security
 
@@ -133,11 +141,11 @@ Open the local URL displayed in your terminal to access Padhlo.
 
 ## 🎓 Project Information
 
-**Project Name:** Padhlo  
+**Project Name:** StudyMate  
 **Project Category:** Artificial Intelligence / Prompt Engineering  
 **Project Type:** Web Application  
 **Primary Objective:** Personalized Academic Planning  
-**Target Users:** School and College Students
+**Target Users:** School and College Students  
 
 Developed as part of a B.Tech Computer Science and Engineering academic practical project.
 
@@ -145,7 +153,7 @@ Developed as part of a B.Tech Computer Science and Engineering academic practica
 
 Our vision is to make academic planning smarter, simpler, and more accessible by helping students focus on what matters most, manage their time effectively, and achieve their academic goals.
 
-**Padhlo – Because studying smarter is better than studying harder.**
+**StudyMate – Because studying smarter is better than studying harder.**
 
 ---
 
