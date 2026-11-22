@@ -1,36 +1,152 @@
-# StudyMate AI
+# 📚 Padhlo – Your AI-Powered Personal Study Planner
 
-Create a responsive React + TypeScript website called StudyMate AI. Build a modern landing page with a navigation bar, hero section, feature cards, and a study planner form. Allow students to enter subjects, difficulty levels, preparation percentages, exam dates, and available study hours. Use a clean dashboard design with blue and white colors. Create a functional frontend with modular components and sample study-plan data. Do not integrate any external APIs yet. Ensure all starter files are generated and saved successfully.
+**Study Smarter. Plan Better. Achieve More.**
 
-This project was built with [Lovable](https://lovable.dev).
+Padhlo is an AI-powered personalized study planning platform designed to help students manage their academic workload efficiently. It uses Artificial Intelligence to generate customized study schedules based on subjects, syllabus, exam dates, preparation levels, subject difficulty, and daily availability.
 
-## Build with Lovable
+Instead of following generic timetables, Padhlo creates intelligent and realistic study plans that adapt to each student's academic needs.
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/e4892acf-47e4-413e-b7df-d6e919f00fc3).
+---
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+## 🎯 Problem Statement
 
-## Development
+Students often struggle to balance multiple subjects, assignments, examinations, and personal commitments. Traditional timetable applications provide fixed schedules without considering individual preparation levels, subject difficulty, or upcoming examination dates.
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+**Padhlo solves this problem by using AI and Prompt Engineering to create personalized, flexible, and practical study schedules.**
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+## ✨ Key Features
+
+- **AI Study Plan Generation:** Generate personalized study timetables based on academic requirements.
+- **Smart Subject Prioritization:** Give more attention to difficult subjects and upcoming examinations.
+- **Preparation Tracking:** Monitor subject-wise preparation percentages.
+- **Daily Study Schedule:** Organize learning sessions, revision, practice, and breaks.
+- **Exam Countdown:** Keep track of upcoming examinations.
+- **Flexible Scheduling:** Modify or regenerate study plans according to changing availability.
+- **Progress Tracking:** Monitor completed study tasks and academic progress.
+- **Responsive Interface:** Access the platform across desktop, tablet, and mobile devices.
+- **Dark/Light Mode:** Choose a comfortable visual experience.
+
+## 🤖 How AI Works
+
+Padhlo uses a structured prompting approach to generate meaningful study plans.
+
+The AI considers:
+
+1. Student information and academic context.
+2. Subjects and syllabus.
+3. Subject difficulty levels.
+4. Current preparation percentages.
+5. Examination dates and deadlines.
+6. Daily available study hours.
+7. Revision and practice requirements.
+
+These inputs are processed through carefully designed prompts to generate realistic and personalized study schedules.
+
+### Prompt Engineering Approach
+
+Padhlo uses the following prompting principles:
+
+- Role-based prompting
+- Context-based prompting
+- Constraint-based prompting
+- Instruction-based prompting
+- Structured output generation
+
+The objective is to produce accurate, relevant, and organized study recommendations rather than generic AI responses.
+
+## 🛠️ Technology Stack
+
+| Technology | Purpose |
+|---|---|
+| Bolt AI | Initial website development |
+| Cursor AI | Code development, debugging and optimization |
+| React / TypeScript | Frontend development |
+| Gemini API | AI-powered study plan generation |
+| Vercel | Website deployment and hosting |
+| Git & GitHub | Version control and project management |
+
+*The technology list should be adjusted if the final implementation uses a different framework or language.*
+
+## ⚙️ How It Works
+
+1. Open Padhlo.
+2. Enter your academic information.
+3. Add subjects, syllabus, difficulty levels and examination dates.
+4. Specify your available study hours.
+5. Generate your personalized AI study plan.
+6. Follow your daily timetable.
+7. Track progress and modify your schedule whenever required.
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js
+- npm
+- Git
+- Gemini API key
+
+### Installation
+
+**1. Clone the repository**
+
+```bash
+git clone YOUR_GITHUB_REPOSITORY_URL
+```
+
+**2. Navigate to the project directory**
+
+```bash
+cd padhlo
+```
+
+**3. Install dependencies**
+
+```bash
+npm install
+```
+
+**4. Configure environment variables**
+
+Create a `.env` file in the project root:
+
+```env
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+Never expose your API key in frontend code or commit your `.env` file to GitHub.
+
+**5. Start the development server**
+
+```bash
 npm run dev
 ```
 
+Open the local URL displayed in your terminal to access Padhlo.
 
-## Enable the StudyMate AI chatbot
+## 🔐 Security
 
-The chatbot uses the OpenAI Responses API from a server route. Your API key stays on the server and is never sent to the browser.
+- API keys are stored using environment variables.
+- AI requests should be handled through a secure backend.
+- Sensitive credentials must never be committed to public repositories.
+- User inputs should be validated before processing.
 
-1. Copy `.env.example` to a new file named `.env` in the project root.
-2. Add your OpenAI API key to `OPENAI_API_KEY` in `.env`.
-3. Keep `OPENAI_MODEL=gpt-6-luna` (or choose another model your API account can access).
-4. Restart the development server with `npm run dev`.
+## 🎓 Project Information
 
-You need an OpenAI API key with API billing/access enabled. ChatGPT subscriptions and API billing are separate. Never commit `.env` or expose your key in frontend code.
+**Project Name:** Padhlo  
+**Project Category:** Artificial Intelligence / Prompt Engineering  
+**Project Type:** Web Application  
+**Primary Objective:** Personalized Academic Planning  
+**Target Users:** School and College Students
+
+Developed as part of a B.Tech Computer Science and Engineering academic practical project.
+
+## 🌟 Vision
+
+Our vision is to make academic planning smarter, simpler, and more accessible by helping students focus on what matters most, manage their time effectively, and achieve their academic goals.
+
+**Padhlo – Because studying smarter is better than studying harder.**
+
+---
+
+*Built with AI. Powered by Better Prompts. Designed for Students.*
